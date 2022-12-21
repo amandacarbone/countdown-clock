@@ -4,24 +4,26 @@ body {
     font-weight: 100;
 }
 
-#clockContainer {
+#clockdiv{
 	font-family: sans-serif;
-	color: #000;
+	color: #fff;
 	display: inline-block;
 	font-weight: 100;
 	text-align: center;
 	font-size: 30px;
 }
 
-#clockOuter {
+#clockdiv > div{
 	padding: 10px;
 	border-radius: 3px;
+	background: #00BF96;
 	display: inline-block;
 }
 
-#clockInner {
+#clockdiv div > span{
 	padding: 15px;
 	border-radius: 3px;
+	background: #00816A;
 	display: inline-block;
 }
 

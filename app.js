@@ -53,7 +53,7 @@
     }
       
     var deadline = getNextSunday();
-    initializeClock('clockContainer', convertToEST(deadline));
+    initializeClock('clockdiv', convertToEST(deadline));
 
     var handler = {
         init: function(options) {
