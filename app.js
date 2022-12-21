@@ -1,55 +1,71 @@
-function getTimeRemaining(endtime) {
-    var t = Date.parse(endtime) - Date.parse(new Date());
-    var seconds = Math.floor((t / 1000) % 60);
-    var minutes = Math.floor((t / 1000 / 60) % 60);
-    var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-    var days = Math.floor(t / (1000 * 60 * 60 * 24));
-    return {
-      'total': t,
-      'days': days,
-      'hours': hours,
-      'minutes': minutes,
-      'seconds': seconds
-    };
-}
-  
-function initializeClock(id, endtime) {
-    var clock = document.getElementById(id);
-    var daysSpan = clock.querySelector('.days');
-    var hoursSpan = clock.querySelector('.hours');
-    var minutesSpan = clock.querySelector('.minutes');
-    var secondsSpan = clock.querySelector('.seconds');
-  
-    function updateClock() {
-      var t = getTimeRemaining(endtime);
-  
-      daysSpan.innerHTML = t.days;
-      hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-      minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-      secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-  
-      if (t.total <= 0) {
-        clearInterval(timeinterval);
-      }
+(function() {
+    function getTimeRemaining(endtime) {
+        var t = Date.parse(endtime) - Date.parse(new Date());
+        var seconds = Math.floor((t / 1000) % 60);
+        var minutes = Math.floor((t / 1000 / 60) % 60);
+        var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+        var days = Math.floor(t / (1000 * 60 * 60 * 24));
+        return {
+          'total': t,
+          'days': days,
+          'hours': hours,
+          'minutes': minutes,
+          'seconds': seconds
+        };
     }
-  
-    updateClock();
-    var timeinterval = setInterval(updateClock, 1000);
-}
-  
-function getNextSunday() {
-    var now = new Date();
-    var nextSunday = new Date();
-    nextSunday.setDate(now.getDate() + (7 - 1 - now.getDay() + 7) % 7 + 1);
-    nextSunday.setHours(11, 0, 0, 0);
-    return nextSunday;
-}
-  
-function convertToEST(date){
-    estOffset = -5.0
-    utc = date.getTime() + (date.getTimezoneOffset() * 60000);
-    return new Date(utc + (3600000 * estOffset));
-}
-  
-var deadline = getNextSunday();
-initializeClock('clockdiv', convertToEST(deadline));
+      
+    function initializeClock(id, endtime) {
+        var clock = document.getElementById(id);
+        var daysSpan = clock.querySelector('.days');
+        var hoursSpan = clock.querySelector('.hours');
+        var minutesSpan = clock.querySelector('.minutes');
+        var secondsSpan = clock.querySelector('.seconds');
+      
+        function updateClock() {
+          var t = getTimeRemaining(endtime);
+      
+          daysSpan.innerHTML = t.days;
+          hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+          minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+          secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+      
+          if (t.total <= 0) {
+            clearInterval(timeinterval);
+          }
+        }
+      
+        updateClock();
+        var timeinterval = setInterval(updateClock, 1000);
+    }
+      
+    function getNextSunday() {
+        var now = new Date();
+        var nextSunday = new Date();
+        nextSunday.setDate(now.getDate() + (7 - 1 - now.getDay() + 7) % 7 + 1);
+        nextSunday.setHours(11, 0, 0, 0);
+        return nextSunday;
+    }
+      
+    function convertToEST(date){
+        estOffset = -5.0
+        utc = date.getTime() + (date.getTimezoneOffset() * 60000);
+        return new Date(utc + (3600000 * estOffset));
+    }
+      
+    var deadline = getNextSunday();
+    initializeClock('clockdiv', convertToEST(deadline));
+
+    var handler = {
+        init: function(options) {
+            dmAPI.loadScript('https://cdn.jsdelivr.net/gh/amandacarbone/countdown-clock@main/app.js').then(function() {
+                getTimeRemaining(options.endtime);
+            })
+        },
+
+        clean: function(options) {
+            options.endtime.innerHTML = '';
+        }
+    }
+
+    dmAPI.registerExternalWidget('countdown', handler);
+})();
