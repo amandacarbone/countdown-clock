@@ -57,7 +57,7 @@
 
     var handler = {
         init: function(options) {
-            dmAPI.loadScript('https://cdn.jsdelivr.net/gh/amandacarbone/countdown-clock@main/app.js').then(function() {
+            dmAPI.loadScript('app.js').then(function() {
                 getTimeRemaining(options.endtime);
             })
         },
