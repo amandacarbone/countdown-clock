@@ -67,5 +67,5 @@
         }
     }
 
-    dmAPI.registerExternalWidget('countdown', handler);
+    dmAPI.registerExternalWidget('countdownv2', handler);
 })();
